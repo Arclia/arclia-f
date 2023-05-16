@@ -1,12 +1,13 @@
 
+from io import StringIO
+
 def _pd_typevars(n: int):
   return f"""
-P{n} = ParamSpec('P{n}')
-R{n} = TypeVar('R{n}')
+X{n} = TypeVar('X{n}')
   """
 
 def _pd_arg(n: int):
-  return f"f{n}: Callable[[Callable[P{n-1}, R{n-1}]], Callable[P{n}, R{n}]]"
+  return f"f{n}: Callable[[X{n - 1}], X{n}]"
 
 
 def pd(n: int):
@@ -18,6 +19,17 @@ def pd(n: int):
 @overload
 def predecorate(
 {rendered_args}
-)-> Callable[[Callable[P0, R0]], Callable[P{n}, R{n}]]:
+)-> Callable[[X0], X{n}]:
     ...
   """
+
+def boom(n: int):
+  w = StringIO()
+
+  for x in range(0, n + 1):
+    w.write(_pd_typevars(x))
+
+  for x in range(0, n + 1):
+    w.write(pd(x))
+
+  return w.getvalue()
