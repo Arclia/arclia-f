@@ -1,0 +1,7 @@
+FROM python:3.10
+
+RUN \
+  groupadd arclia && \
+  useradd --gid arclia --shell /bin/bash --create-home arclia
+
+USER arclia

@@ -1,0 +1,11 @@
+
+# Docker stuffs
+/docker-compose.yml
+/.env
+
+# Python stuffs
+*.pyc
+__pycache__
+/build/
+/dist/
+/*.egg-info
