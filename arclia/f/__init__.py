@@ -12,51 +12,46 @@ X6 = TypeVar('X6')
 X7 = TypeVar('X7')
 X8 = TypeVar('X8')
 X9 = TypeVar('X9')
-
+X10 = TypeVar('X10')
 
 @overload
-def predecorate(
+def prewrap(
 
 )-> Callable[[X0], X0]:
     ...
-
-
+  
 @overload
-def predecorate(
+def prewrap(
     f1: Callable[[X0], X1],
 )-> Callable[[X0], X1]:
     ...
-
-
+  
 @overload
-def predecorate(
+def prewrap(
     f2: Callable[[X1], X2],
     f1: Callable[[X0], X1],
 )-> Callable[[X0], X2]:
     ...
-
-
+  
 @overload
-def predecorate(
+def prewrap(
     f3: Callable[[X2], X3],
     f2: Callable[[X1], X2],
     f1: Callable[[X0], X1],
 )-> Callable[[X0], X3]:
     ...
-
-
+  
 @overload
-def predecorate(
+def prewrap(
     f4: Callable[[X3], X4],
     f3: Callable[[X2], X3],
     f2: Callable[[X1], X2],
     f1: Callable[[X0], X1],
 )-> Callable[[X0], X4]:
     ...
-
-
+  
 @overload
-def predecorate(
+def prewrap(
     f5: Callable[[X4], X5],
     f4: Callable[[X3], X4],
     f3: Callable[[X2], X3],
@@ -64,10 +59,9 @@ def predecorate(
     f1: Callable[[X0], X1],
 )-> Callable[[X0], X5]:
     ...
-
-
+  
 @overload
-def predecorate(
+def prewrap(
     f6: Callable[[X5], X6],
     f5: Callable[[X4], X5],
     f4: Callable[[X3], X4],
@@ -76,10 +70,9 @@ def predecorate(
     f1: Callable[[X0], X1],
 )-> Callable[[X0], X6]:
     ...
-
-
+  
 @overload
-def predecorate(
+def prewrap(
     f7: Callable[[X6], X7],
     f6: Callable[[X5], X6],
     f5: Callable[[X4], X5],
@@ -89,10 +82,9 @@ def predecorate(
     f1: Callable[[X0], X1],
 )-> Callable[[X0], X7]:
     ...
-
-
+  
 @overload
-def predecorate(
+def prewrap(
     f8: Callable[[X7], X8],
     f7: Callable[[X6], X7],
     f6: Callable[[X5], X6],
@@ -103,10 +95,9 @@ def predecorate(
     f1: Callable[[X0], X1],
 )-> Callable[[X0], X8]:
     ...
-
-
+  
 @overload
-def predecorate(
+def prewrap(
     f9: Callable[[X8], X9],
     f8: Callable[[X7], X8],
     f7: Callable[[X6], X7],
@@ -118,18 +109,33 @@ def predecorate(
     f1: Callable[[X0], X1],
 )-> Callable[[X0], X9]:
     ...
+  
+@overload
+def prewrap(
+    f10: Callable[[X9], X10],
+    f9: Callable[[X8], X9],
+    f8: Callable[[X7], X8],
+    f7: Callable[[X6], X7],
+    f6: Callable[[X5], X6],
+    f5: Callable[[X4], X5],
+    f4: Callable[[X3], X4],
+    f3: Callable[[X2], X3],
+    f2: Callable[[X1], X2],
+    f1: Callable[[X0], X1],
+)-> Callable[[X0], X10]:
+    ...
 
 
-def predecorate(*decorators):
-    _decorators = list(reversed(decorators))
-    def _decorate(f):
-        decorated_f = f
-        for d in _decorators:
-            decorated_f = d(decorated_f)
+def prewrap(*wrappers: Callable):
+    _wrappers = list(reversed(wrappers))
+    def _wrap(f):
+        wrapped_f = f
+        for w in _wrappers:
+            wrapped_f = w(wrapped_f)
 
-        return decorated_f
+        return wrapped_f
 
-    return _decorate
+    return _wrap
 
 
 def f(x: int):
@@ -153,6 +159,6 @@ def J(_f: Callable[[int], int]):
 
     return j
 
-Z = predecorate(H, G, J, J, J)
+Z = prewrap(H, G, J, J, J)
 
 z = Z(f)
